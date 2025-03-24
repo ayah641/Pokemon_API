@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Pokemon</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <header>
+    <div class="header" id="header">
+      <h1>API Pokemon</h1>
+    </div>
+  </header>
+  <body>
+    <div class="aside" id="aside">
+      <aside>
+        <h2>Search Pokemon</h2>
+        <input
+          type="text"
+          class="searchInput"
+          id="searchInput"
+          placeholder="Search Pokemon"
+        />
+        <button class="searchBtn" id="searchBtn">Search</button>
+      </aside>
+    </div>
+    <div class="main" id="main">
+      <main id="pokeonData">
+        <h2>Pokemon Details</h2>
+        <p>Enter Pokemon Name then Search</p>
+        <div class="pokemon-grid" id="pokemonGrid"></div>
+
+        <h2>Pokemon Details</h2>
+        <p>Enter Pokemon Name then Search</p>
+      </main>
+    </div>
+      </main>
+    </div>
+    <script>
+          const pokemonGrid = document.getElementById("pokemonGrid");
+          const pokeonData = document.getElementById("pokeonData");
+
+          fetch("https://pokeapi.co/api/v2/pokemon?limit=20") // Fetch first 20 Pokémon
+        .then((res) => res.json())
+        .then((data) => {
+          data.results.forEach((pokemon) => {
+            fetch(pokemon.url)
+              .then((res) => res.json())
+              .then((pokemonData) => {
+                const pokemonCard = document.createElement("div");
+                pokemonCard.classList.add("pokemon-card");
+                pokemonCard.innerHTML = `
+                  <img src="${pokemonData.sprites.front_default}" alt="${pokemonData.name}" />
+                  <p>${pokemonData.name}</p>
+                `;
+                
+                pokemonCard.addEventListener("click", () => displayPokemon(pokemonData));
+                pokemonGrid.appendChild(pokemonCard);
+              });
+          });
+        });
+
+        function displayPokemon(data) {
+        pokeonData.innerHTML = `
+          <div class="pokemon-grid" id="pokemonGrid"></div>
+          <h2>${data.name}</h2>
+          <img src="${data.sprites.front_default}" alt="${data.name}" />
+          <p>ID: ${data.id}</p>
+          <p>Height: ${data.height}</p>
+          <p>Weight: ${data.weight}</p>
+          <p>Types: ${data.types.map((type) => type.type.name).join(", ")}</p>
+          <p>Stats: ${data.stats.map((stat) => `${stat.stat.name}: ${stat.base_stat}`).join(", ")}</p>
+          <p>Abilities: ${data.abilities.map((ability) => ability.ability.name).join(',')}</p>
+        `;
+        pokeonData.prepend(pokemonGrid);
+      }
+
+      // Search functionality
+      document.getElementById("searchBtn").addEventListener("click", () => {
+        const searchInput = document.getElementById("searchInput").value.toLowerCase();
+        fetch(`https://pokeapi.co/api/v2/pokemon/${searchInput}`)
+          .then((res) => res.json())
+          .then((data) => displayPokemon(data))
+          .catch(() => {
+            pokeonData.innerHTML = `<h2>Pokemon Details</h2><p>Pokemon not found, try again</p>`;
+            pokeonData.prepend(pokemonGrid);
+          });
+      });  
+
+      fetch("https://pokeapi.co/api/v2/pokemon")
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data.results);
+        });
+    //     // Search functionality
+    //   document.getElementById("searchBtn").addEventListener("click", () => {
+    //     const searchInput = document.getElementById("searchInput").value;
+    //     fetch(`https://pokeapi.co/api/v2/pokemon/${searchInput}`)
+    //       .then((res) => res.json())
+    //       .then((data) => {
+    //         const pokeonData = document.getElementById("pokeonData");
+    //         pokeonData.innerHTML = `
+    //             <h2>${data.name}</h2>
+    //             <img src="${data.sprites.front_default}" alt="${data.name}" />
+    //             <p>Height: ${data.height}</p>
+    //             <p>Weight: ${data.weight}</p>
+    //             <p>Types: ${data.types
+    //               .map((type) => type.type.name)
+    //               .join(", ")}</p>
+    //             <p>Stats: ${data.stats
+    //               .map((stat) => `${stat.stat.name}: ${stat.base_stat}`)
+    //               .join(", ")}</p>
+
+    //             <p>Abilities: ${data.abilities
+    //               .map((ability) => ability.ability.name)
+    //               .join(", ")}</p>
+    //             `;
+    //       })
+    //       .catch((error) => {
+    //         let messageerror = "Pokemon not found, try again";
+    //         const pokeonData = document.getElementById("pokeonData");
+    //         pokeonData.innerHTML = `
+    //             <h2>Pokemon Details</h2>
+    //             <p>${messageerror}</p>
+    //             `;
+    //       });
+    //   });
+    </script>
+  </body>
+</html>
