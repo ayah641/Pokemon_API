@@ -8,6 +8,7 @@
   color: #fff;
   text-align: center;
   padding: 10px;
+  width: 100%;
 }
 .aside {
   width: 100%;
@@ -21,10 +22,11 @@
   align-self: center;
   text-align: center;
 }
+
 .searchInput {
   width: 50%;
   padding: 10px;
-  margin: 10px 0;
+  margin: 10px;
   border-radius: 5px;
   border: solid 1px #493d3d;
 }
@@ -44,14 +46,23 @@
 }
 .pokemon-grid {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto; /* Enable horizontal scrolling */
   gap: 10px;
-  justify-content: center;
-  margin-bottom: 20px;
+  padding: 10px;
+  /* justify-content: center;
+  margin-bottom: 20px; */
+  white-space: nowrap;
+  scroll-behavior: smooth; /* Smooth scrolling effect */
 }
 .pokemon-card {
-  width: 100px;
+  flex: 0 0 auto; /* Prevent shrinking */
+  width: 150px;
   text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
   cursor: pointer;
 }
 .pokemon-card img {
@@ -73,4 +84,78 @@
 .pokemon-details img {
   width: 150px;
   height: 150px;
+}
+
+/* Modal Styling */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Dark background */
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  text-align: center;
+}
+
+.close {
+  color: red;
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Sidebar Styling (Alternative) */
+.sidebar {
+  position: fixed;
+  right: -350px; /* Hide by default */
+  top: 0;
+  width: 300px;
+  height: 100vh;
+  background-color: white;
+  padding: 20px;
+  border-left: 2px solid #ddd;
+  transition: right 0.4s ease-in-out;
+}
+
+.sidebar.show {
+  right: 0;
+}
+
+/* Sidebar Styling */
+.sidebar {
+  position: fixed;
+  right: -350px; /* Initially hidden */
+  top: 0;
+  width: 300px;
+  height: 100vh;
+  background-color: white;
+  padding: 20px;
+  border-left: 2px solid #ddd;
+  transition: right 0.4s ease-in-out;
+  overflow-y: auto;
+  box-shadow: -3px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar.show {
+  right: 0; /* Slide in */
+}
+
+.closeSidebar {
+  color: red;
+  font-size: 24px;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 15px;
 }
